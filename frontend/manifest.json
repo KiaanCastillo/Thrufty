@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+    "name": "Thrufty",
+    "version": "0.1",
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "Content.js"
+            ]
+        }
+    ],
+    "background": {
+        "service_worker": "Background.js"
+    },
+    "action": {
+        "default_icon": "./assets/icon.png",
+        "default_popup": "Popup.html",
+        "default_title": "Thrufty popup test"
+    }
+}
