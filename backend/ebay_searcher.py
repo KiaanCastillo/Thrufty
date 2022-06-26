@@ -45,6 +45,7 @@ def search_ebay(name):
 
         if is_valid_info(link, price, img):
             results.append({
+                'store': 'Ebay',
                 'link': link,
                 'price': price,
                 'img': img_src

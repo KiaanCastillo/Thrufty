@@ -44,6 +44,7 @@ def search_poshmark(name):
 
         if is_valid_info(link, price, img):
             results.append({
+                'store': 'Poshmark',
                 'link': f'{base_url}{href}',
                 'price': price,
                 'img': img_src

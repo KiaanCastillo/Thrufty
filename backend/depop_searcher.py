@@ -43,6 +43,7 @@ def search_depop(name):
 
         if is_valid_info(link, price, img):
             results.append({
+                'store': 'Depop',
                 'link': link,
                 'price': price,
                 'img': img
