@@ -6,6 +6,10 @@
         {
             "resources": [ "assets/icon.png" ],
             "matches": [ "https://web-accessible-resources-1.glitch.me/*" ]
+        },
+        {
+            "resources": [ "styles/Popup.css" ],
+            "matches": [ "https://web-accessible-resources-1.glitch.me/*" ]
         }
     ],
     "content_scripts": [
@@ -15,10 +19,17 @@
             ],
             "js": [
                 "Content.js"
+            ],
+            "css": [
+                "styles/Popup.css"
             ]
         }
     ],
+    "host_permissions": [
+        "http://*/*", "https://*/*"
+    ],
     "permissions": [
+        "activeTab",
         "tabs",
         "storage"
     ],
