@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Manrope:400,600');
 
 #popup {
+    display: none;
     position: fixed;
     width: 424px;
     height: 630px;

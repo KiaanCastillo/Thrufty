@@ -12,7 +12,7 @@ var popupContent = document.createElement('div'); // <div popup-content>
 popupContent.setAttribute('class', 'popup-content');
 var closeBtn = document.createElement('span'); // <span close>
 closeBtn.setAttribute('class', 'close');
-closeBtn.addEventListener("click", ()=> {popupDiv.style.display = "none";});
+closeBtn.addEventListener("click", closePopup);
 var iconClose = document.createElement('img'); // <img>
 var iconCloseBase64 = "data:image/svg+xml;charset=utf-8;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYuNzgzMzUgNkwxMS4zODg5IDEuMzk0NDRDMTEuNDc5OSAxLjI4ODE2IDExLjUyNzUgMS4xNTE0NSAxMS41MjIxIDEuMDExNjNDMTEuNTE2NyAwLjg3MTgxNSAxMS40NTg3IDAuNzM5MTgyIDExLjM1OTggMC42NDAyNDFDMTEuMjYwOCAwLjU0MTI5OSAxMS4xMjgyIDAuNDgzMzM3IDEwLjk4ODQgMC40Nzc5MzZDMTAuODQ4NiAwLjQ3MjUzNSAxMC43MTE4IDAuNTIwMDk0IDEwLjYwNTYgMC42MTExMDlMNi4wMDAwMSA1LjIxNjY2TDEuMzk0NDYgMC42MDU1NTNDMS4yODk4NCAwLjUwMDk0IDEuMTQ3OTYgMC40NDIxNjkgMS4wMDAwMSAwLjQ0MjE2OUMwLjg1MjA2NyAwLjQ0MjE2OSAwLjcxMDE4MSAwLjUwMDk0IDAuNjA1NTY4IDAuNjA1NTUzQzAuNTAwOTU1IDAuNzEwMTY3IDAuNDQyMTgzIDAuODUyMDUzIDAuNDQyMTgzIDAuOTk5OTk4QzAuNDQyMTgzIDEuMTQ3OTQgMC41MDA5NTUgMS4yODk4MyAwLjYwNTU2OCAxLjM5NDQ0TDUuMjE2NjggNkwwLjYwNTU2OCAxMC42MDU2QzAuNTQ3NDExIDEwLjY1NTQgMC41MDAxNzggMTAuNzE2NiAwLjQ2NjgzMSAxMC43ODU2QzAuNDMzNDg1IDEwLjg1NDUgMC40MTQ3NDYgMTAuOTI5NiAwLjQxMTc5MSAxMS4wMDYxQzAuNDA4ODM2IDExLjA4MjYgMC40MjE3MjggMTEuMTU4OSAwLjQ0OTY1OCAxMS4yMzAyQzAuNDc3NTg4IDExLjMwMTUgMC41MTk5NTQgMTEuMzY2MiAwLjU3NDA5NSAxMS40MjA0QzAuNjI4MjM3IDExLjQ3NDUgMC42OTI5ODUgMTEuNTE2OSAwLjc2NDI3NyAxMS41NDQ4QzAuODM1NTY5IDExLjU3MjcgMC45MTE4NjUgMTEuNTg1NiAwLjk4ODM3NSAxMS41ODI3QzEuMDY0ODkgMTEuNTc5NyAxLjEzOTk2IDExLjU2MSAxLjIwODg4IDExLjUyNzZDMS4yNzc4MSAxMS40OTQzIDEuMzM5MSAxMS40NDcgMS4zODg5IDExLjM4ODlMNi4wMDAwMSA2Ljc4MzMzTDEwLjYwNTYgMTEuMzg4OUMxMC43MTE4IDExLjQ3OTkgMTAuODQ4NiAxMS41Mjc1IDEwLjk4ODQgMTEuNTIyMUMxMS4xMjgyIDExLjUxNjcgMTEuMjYwOCAxMS40NTg3IDExLjM1OTggMTEuMzU5OEMxMS40NTg3IDExLjI2MDggMTEuNTE2NyAxMS4xMjgyIDExLjUyMjEgMTAuOTg4NEMxMS41Mjc1IDEwLjg0ODUgMTEuNDc5OSAxMC43MTE4IDExLjM4ODkgMTAuNjA1Nkw2Ljc4MzM1IDZaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4K";
 iconClose.src = iconCloseBase64;
@@ -26,6 +26,7 @@ var subtitle = document.createElement('p'); // <p>
 subtitle.setAttribute('class', 'subtitle');
 subtitle.textContent = "25 results found";
 
+// </>
 popupContent.appendChild(title);
 popupContent.appendChild(subtitle);
 popupDiv.appendChild(popupContent);
@@ -35,12 +36,12 @@ document.body.appendChild(popupDiv);
 imgBtn.addEventListener("click", receivedMessageDOM)
 document.body.appendChild(imgBtn);
 
-window.onclick = function(event) {
-    var popup = document.getElementById('popup');
-    if (event.target == popup) {
-        popup.style.display = "none";
-    }
-}
+// window.onclick = function(event) {
+//     var popup = document.getElementById('popup');
+//     if (event.target == popup) {
+//         popup.style.display = "none";
+//     }
+// }
 
 
 // -----------------------------------
@@ -51,6 +52,7 @@ chrome.runtime.onMessage.addListener(receivedMessageBG);
 function receivedMessageDOM (){
     // send msg to background?
     // trigger API call
+    
     // modify DOM
     var popup = document.getElementById('popup');
     popup.style.display = "block";
