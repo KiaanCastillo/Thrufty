@@ -10,6 +10,7 @@ var popupDiv = document.createElement('div'); // <div popup>
 popupDiv.setAttribute('id', 'popup');
 var popupContent = document.createElement('div'); // <div popup-content>
 popupContent.setAttribute('class', 'popup-content');
+popupContent.setAttribute('id', 'popup-content-id');
 var closeBtn = document.createElement('span'); // <span close>
 closeBtn.setAttribute('class', 'close');
 closeBtn.addEventListener("click", closePopup);
@@ -21,10 +22,12 @@ closeBtn.appendChild(iconClose);
 popupContent.appendChild(closeBtn);
 var title = document.createElement('h4'); // <h4>
 title.setAttribute('class', 'title');
+title.setAttribute('id', 'title-id');
 title.textContent = "dummy Title lakflsk lkj slf lkjlkj;j lkj lkjsf l;kj ;jk";
 var subtitle = document.createElement('p'); // <p>
 subtitle.setAttribute('class', 'subtitle');
-subtitle.textContent = "25 results found";
+subtitle.setAttribute('id', 'subtitle-id');
+subtitle.textContent = "__ results found";
 
 // </>
 popupContent.appendChild(title);
@@ -46,17 +49,351 @@ document.body.appendChild(imgBtn);
 
 // -----------------------------------
 // Listener for background
+
 chrome.runtime.onMessage.addListener(receivedMessageBG);
 
+async function getListProducts(searchkey) {
+    let products = await (await fetch(`https://thrufty.herokuapp.com/api/search?name=${searchkey}`, {mode: 'no-cors'})).json();
+    return products;
+  }
+
+
 // Floating
-function receivedMessageDOM (){
+async function receivedMessageDOM (){
+    let productTitleDOM = document.querySelector('h1').textContent.trim();
+    var widgetTitle = document.getElementById('title-id');
+    widgetTitle.textContent = productTitleDOM;
     // send msg to background?
     // trigger API call
-    
-    // modify DOM
+    let mockData = [
+        {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2021/07/29/6102fff80bee62837f60f4b2/s_610306a5180136be51916497.jpeg",
+            "link": "https://poshmark.ca/listing/Lightweight-packable-rain-jacket-6102fff80bee62837f60f4b2",
+            "price": "C$17",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/BLUENOTES-RELAXED-FIT-DENIM-JACKET-5f8e3ec4074d246032575b36",
+            "price": "C$20",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Hollister-Relaxed-Fit-Denim-Jacket-60563cf767bd9176eca8a324",
+            "price": "C$20",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2022/06/12/62a679a5a4de41e8aa44b7de/s_62a679ade13164e60e5fe968.jpg",
+            "link": "https://poshmark.ca/listing/Lululemon-Puffer-Lightweight-Relaxed-Fit-Down-Jacket-62a679a5a4de41e8aa44b7de",
+            "price": "C$110",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/American-Eagle-Lightweight-Rain-Jacket-6164fd7860fdedf01ea6fc88",
+            "price": "C$15",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Vintage-1990s-LEVIS-550-RELAXED-FIT-TAPERED-LEG-619573c9ff83041e982a4ba4",
+            "price": "C$50",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Reebok-Silver-Pullover-lightweight-Rain-Jacket-5f5acd7088cce30bd16a7975",
+            "price": "C$13",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2022/05/03/62719ba04fd23a49c2fcaab1/s_62719babefd0e4184658f2b6.jpg",
+            "link": "https://poshmark.ca/listing/Cabelas-Lightweight-Rain-Jacket-62719ba04fd23a49c2fcaab1",
+            "price": "C$15",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2022/06/17/62aceed5a4de41182a7a4e32/s_62acef58008b997de6b69591.jpg",
+            "link": "https://poshmark.ca/listing/Carhartt-Rain-Defender-Utility-Coat-Parka-Relaxed-Fit-Coat-Sherpa-Hood-Quilted-62aceed5a4de41182a7a4e32",
+            "price": "C$130",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Levis-relaxed-fit-corduroy-jacket-6293fe028da5c9c894b36099",
+            "price": "C$40",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/NWT-packable-lightweight-rain-jacket-6283dffcefd0e4198a8f5330",
+            "price": "C$35",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Girls-Columbia-Lightweight-Windbreaker-Rain-Jacket-6045346aae766fb1a9e5c4d1",
+            "price": "C$16",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Carhartt-Storm-Defender-Jacket-62b7301809d76020cf7f0bbd",
+            "price": "C$120",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2021/07/06/60e50f724fd23a1bc9179fce/s_60e50f85bcbb524337ee7df5.jpg",
+            "link": "https://poshmark.ca/listing/Moncler-lightweight-rain-jacket-60e50f724fd23a1bc9179fce",
+            "price": "C$500",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://media-photos.depop.com/b0/4301228/1243401877_f469ca907a7344a39d2db58999fa06f1/P7.jpg",
+            "link": "https://www.depop.com/products/pineapplehillstore-carhartt-upland-hunting-jacket-available",
+            "price": "£109.99",
+            "store": "Depop"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/ADIDAS-LIGHTWEIGHT-RAIN-JACKET-61cd2bc4ae766f3e7e7c378e",
+            "price": "C$18",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Suede-Moto-Jacket-Relaxed-Fit-62200652163df4bbdd95ebba",
+            "price": "C$29",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/LULULEMON-relaxed-fit-mesh-jacket-622fd011691412fb7a38ee44",
+            "price": "C$45",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Black-Lululemon-Stretch-Seal-Relaxed-Fit-Rain-Jacket-61e3c060ffba940734f6e4a5",
+            "price": "C$120",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2020/10/10/5f81e5b29e15597774fdbbf6/s_5f81e5c8ae766fb906af6f35.jpg",
+            "link": "https://poshmark.ca/listing/Lightweight-relaxed-fit-patterned-sweater-5f81e5b29e15597774fdbbf6",
+            "price": "C$18",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2020/08/08/5f2f212eefd0e4e7c861533b/s_5f2f21443cda8872af2b5472.jpg",
+            "link": "https://poshmark.ca/listing/Bench-lightweight-rain-jacket-5f2f212eefd0e4e7c861533b",
+            "price": "C$35",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/XL-Rain-Jacket-Hooded-Lightweight-Waterproof-Rain-Shell-Jacket-622512e884bb0b70b2b54580",
+            "price": "C$25",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Community-gray-rain-jacket-generally-lightweight-60cd05b49c33786be1c5b3e4",
+            "price": "C$40",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Merrell-lightweight-rain-jacket-size-XS-62434f3a920786ed752f4daf",
+            "price": "C$68",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Relaxed-Fit-Denim-Jacket-5f432c86ac9702ec9a13b1f9",
+            "price": "C$17",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/LEVIS-Lightweight-Rubberized-Fishtail-Rain-Jacket-6246585112d880ed2941e145",
+            "price": "C$60",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Lululemon-NWT-Lightweight-Relaxed-Fit-Down-Jacket-Size-10-62af83eb180136e211777ac1",
+            "price": "C$126",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Bright-purple-lightweight-rain-jacket-610da4f960fdedef5a78a555",
+            "price": "C$15",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Relaxed-boyfriend-fit-field-jacket-625dd59381a36c0df66aefc9",
+            "price": "C$30",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2022/06/12/62a6caeb92078669cef7ca13/s_62a6cb0ec3c2d0fd23f958d8.jpg",
+            "link": "https://poshmark.ca/listing/Carhartt-Rain-Defender-Jacket-in-Black-62a6caeb92078669cef7ca13",
+            "price": "C$100",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Jolie-womens-relaxed-fit-lightweight-pattern-dress-62aebffbac9702ed62a72010",
+            "price": "C$25",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2021/03/23/605a3093ae766f315a293194/s_605a30a06f6c91518b309430.jpg",
+            "link": "https://poshmark.ca/listing/Relaxed-fit-striped-lightweight-sweater-605a3093ae766f315a293194",
+            "price": "C$15",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Northface-lightweight-rain-jacket-XL-Slimfit-6233c13ce13164fd505c7a5c",
+            "price": "C$50",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2022/01/18/61e71c048da5c999532bb2f8/s_61e71c45efd0e46d81ccea0b.jpg",
+            "link": "https://poshmark.ca/listing/Mondetta-Lightweight-Rain-Jacket-61e71c048da5c999532bb2f8",
+            "price": "C$70",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/LululemonRelaxed-Fit-Mesh-Jacket-6122e81569141298ff6b8329",
+            "price": "C$108",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Black-Relaxed-Fit-Jacket-62b3a5be57600697b3b1fc39",
+            "price": "C$60",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2022/04/04/624b9a9706d59c1e12d1fdd3/s_624b9aa4180136de9d511927.jpg",
+            "link": "https://poshmark.ca/listing/Lululemon-StretchFit-Relaxed-Fit-Rain-Jacket-624b9a9706d59c1e12d1fdd3",
+            "price": "C$160",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Mondetta-Lightweight-Rain-Jacket-Size-Large-61fdaa84045e39b1aa37cfe1",
+            "price": "C$64",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/G-Lab-Lightweight-Hooded-Rain-Jacket-621e662409d76043363da190",
+            "price": "C$329",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Uniqlo-Green-Lightweight-Rain-Jacket-5dc862d2de696af042c60f00",
+            "price": "C$35",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Nike-Move-to-Zero-14-zip-rain-jacket-relaxed-fit-627478e59207866d0c23c608",
+            "price": "C$178",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/HUNTER-Original-Lightweight-Rain-Jacket-6269ac664eeede10c98002b8",
+            "price": "C$250",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2022/03/21/6238d8f0bcbb52218a675b72/s_6299160fae766fb638657536.jpg",
+            "link": "https://poshmark.ca/listing/Adidas-Lightweight-Rain-Jacket-6238d8f0bcbb52218a675b72",
+            "price": "C$39",
+            "store": "Poshmark"
+            },
+            {
+            "img": "https://di2ponv0v5otw.cloudfront.net/posts/2022/03/19/623626b75e46b0eac6c0ce2f/s_623626f2446e597d217b6158.jpg",
+            "link": "https://poshmark.ca/listing/Lightweight-Columbia-Rain-Jacket-623626b75e46b0eac6c0ce2f",
+            "price": "C$40",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Lightweight-animal-print-rain-jacket-6270a06c800f64038a642c61",
+            "price": "C$25",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Relaxed-fit-activewear-jacket-600dabfe920786bb81c36e1c",
+            "price": "C$27",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Womens-Medium-Hurley-Lightweight-Rain-Jacket-60de0cdb4fd23a9a325a6feb",
+            "price": "C$30",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Cropped-Maroon-Tanktop-Lightweight-Relaxed-fit-6287d6f6c3c2d0601bbaca79",
+            "price": "C$10",
+            "store": "Poshmark"
+            },
+            {
+            "img": null,
+            "link": "https://poshmark.ca/listing/Mango-RainWind-jacket-lightweight-62170a29a4de41ba7c0b7b93",
+            "price": "C$45",
+            "store": "Poshmark"
+            }
+    ];
+    // await fetch(`https://thrufty.herokuapp.com/api/search?name=${productTitleDOM}`, {mode: 'no-cors'})
+    //     .then(response => console.log(response.body));
+    // console.log(await response.json());
+    // await getListProducts(productTitleDOM).then(products => {
+    //     console.log(products)
+    // });
+
+    // modify DOM ------------
     var popup = document.getElementById('popup');
+    var popupContents = document.getElementById('popup-content-id');
+    var itemsDiv = document.createElement('div');
+    itemsDiv.setAttribute('class', 'items');
+    let count = 0;
+    mockData.forEach((item, index) => {
+        if(item.img != null){
+            count++;
+            var itemDiv = document.createElement('a');
+            itemDiv.href = item.link;
+            var imgBackground = document.createElement('img');
+            imgBackground.src = item.img;
+            imgBackground.alt = "item image";
+            itemDiv.textContent = item.price;
+            itemDiv.setAttribute('class', 'item');
+            itemDiv.appendChild(imgBackground);
+            itemsDiv.appendChild(itemDiv);
+        }
+    });
+    var subtitle = document.getElementById('subtitle-id');
+    subtitle.textContent = `${count} results found`;
+    popupContents.appendChild(itemsDiv);
     popup.style.display = "block";
 
+    // testing below ----------------------
     let domMsg = {
         txt: "dom msg"
     };
